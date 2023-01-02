@@ -1,9 +1,10 @@
 package models
 
 type Yeast struct {
-	ID    int    `json:"id"`
-	Title string `json:"title"`
-	Top   string `json:"top"`
+	ID     int    `json:"id"`
+	Title  string `json:"title"`
+	Top    string `json:"top"`
+	Amount int    `json:"amount"`
 }
 
 func GetYeast() Yeast {

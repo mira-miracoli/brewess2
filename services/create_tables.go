@@ -13,8 +13,10 @@ import (
 type Table models.Table
 
 const sequence string = `create sequence IF NOT EXISTS %s_id_seq start with 1 increment by 1;`
-const createTableStart string = `create table IF NOT EXISTS public.%s ( id integer NOT null default nextval('%s_id_seq'), title text, `
+
+const createTableStart string = `create table IF NOT EXISTS public.%s ( id integer NOT null default nextval('%s_id_seq'), `
 const createTableColumn string = ` %s %s,`
+
 const createTableEnd string = `constraint "%s_pkey" primary key (id)) with (oids = false) tablespace pg_default;`
 
 const ownership string = `alter table public.%s owner to` + utils.User + `;`
@@ -67,7 +69,7 @@ func (t Table) ExecuteQuery(q string) {
 	return
 }
 
-func (t Table) CreateResourceTable() {
+func (t Table) CreateTable() {
 	log.Printf(t.SequenceQuery)
 	log.Printf(t.CreateTableQuery)
 	log.Printf(t.OwnershipQuery)
