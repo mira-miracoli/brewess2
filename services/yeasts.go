@@ -78,8 +78,8 @@ func CreateYeast(w http.ResponseWriter, r *http.Request) {
 
 	_ = json.NewDecoder(r.Body).Decode(&yeast)
 
-	sqlStmt := `INSERT INTO yeasts(title, top) VALUES($1,$2) RETURNING id`
-	err := dbconn.QueryRow(sqlStmt, yeast.Title, yeast.Top).Scan(&id)
+	sqlStmt := `INSERT INTO yeasts(title, top, amount) VALUES($1,$2,$3) RETURNING id`
+	err := dbconn.QueryRow(sqlStmt, yeast.Title, yeast.Top, yeast.Amount).Scan(&id)
 	if err != nil {
 		http.Error(w, err.Error(), 400)
 		return
@@ -99,8 +99,8 @@ func UpdateYeast(w http.ResponseWriter, r *http.Request) {
 	yeast.ID, _ = strconv.Atoi(params["id"])
 
 	id := 0
-	sqlStmt := `UPDATE yeasts SET title=$1, top=$2 WHERE id=$3 RETURNING id`
-	err := dbconn.QueryRow(sqlStmt, yeast.Title, yeast.Top, params["id"]).Scan(&id)
+	sqlStmt := `UPDATE yeasts SET title=$1, top=$2, amount=$3 WHERE id=$4 RETURNING id`
+	err := dbconn.QueryRow(sqlStmt, yeast.Title, yeast.Top, yeast.Amount, params["id"]).Scan(&id)
 	if err != nil {
 		http.Error(w, err.Error(), 400)
 		return

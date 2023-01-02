@@ -78,8 +78,8 @@ func CreateHop(w http.ResponseWriter, r *http.Request) {
 
 	_ = json.NewDecoder(r.Body).Decode(&hop)
 
-	sqlStmt := `INSERT INTO hops(title, iso) VALUES($1,$2) RETURNING id`
-	err := dbconn.QueryRow(sqlStmt, hop.Title, hop.Iso).Scan(&id)
+	sqlStmt := `INSERT INTO hops(title, iso, amount) VALUES($1,$2,$3) RETURNING id`
+	err := dbconn.QueryRow(sqlStmt, hop.Title, hop.Iso, hop.Amount).Scan(&id)
 	if err != nil {
 		http.Error(w, err.Error(), 400)
 		return
@@ -99,8 +99,8 @@ func UpdateHop(w http.ResponseWriter, r *http.Request) {
 	hop.ID, _ = strconv.Atoi(params["id"])
 
 	id := 0
-	sqlStmt := `UPDATE hops SET title=$1, iso=$2 WHERE id=$3 RETURNING id`
-	err := dbconn.QueryRow(sqlStmt, hop.Title, hop.Iso, params["id"]).Scan(&id)
+	sqlStmt := `UPDATE hops SET title=$1, iso=$2, amount=$3 WHERE id=$4 RETURNING id`
+	err := dbconn.QueryRow(sqlStmt, hop.Title, hop.Iso, hop.Amount, params["id"]).Scan(&id)
 	if err != nil {
 		http.Error(w, err.Error(), 400)
 		return

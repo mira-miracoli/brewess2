@@ -17,7 +17,7 @@ func GetAllMalts(w http.ResponseWriter, r *http.Request) {
 
 	var malts = models.GetMalts()
 
-	sqlStmt := `SELECT * FROM malts`
+	sqlStmt := `SELECT * FROM malts;`
 	rows, err := dbconn.Queryx(sqlStmt)
 
 	if err == nil {
@@ -78,8 +78,8 @@ func CreateMalt(w http.ResponseWriter, r *http.Request) {
 
 	_ = json.NewDecoder(r.Body).Decode(&malt)
 
-	sqlStmt := `INSERT INTO malts(title, EBC) VALUES($1,$2) RETURNING id`
-	err := dbconn.QueryRow(sqlStmt, malt.Title, malt.EBC).Scan(&id)
+	sqlStmt := `INSERT INTO malts(title, ebc, amount) VALUES($1,$2,$3) RETURNING id`
+	err := dbconn.QueryRow(sqlStmt, malt.Title, malt.EBC, malt.Amount).Scan(&id)
 	if err != nil {
 		http.Error(w, err.Error(), 400)
 		return
@@ -99,8 +99,8 @@ func UpdateMalt(w http.ResponseWriter, r *http.Request) {
 	malt.ID, _ = strconv.Atoi(params["id"])
 
 	id := 0
-	sqlStmt := `UPDATE malts SET title=$1, EBC=$2 WHERE id=$3 RETURNING id`
-	err := dbconn.QueryRow(sqlStmt, malt.Title, malt.EBC, params["id"]).Scan(&id)
+	sqlStmt := `UPDATE malts SET title=$1, ebc=$2, amount=$4 WHERE id=$4 RETURNING id`
+	err := dbconn.QueryRow(sqlStmt, malt.Title, malt.EBC, malt.Amount, params["id"]).Scan(&id)
 	if err != nil {
 		http.Error(w, err.Error(), 400)
 		return
