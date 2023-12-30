@@ -1,6 +1,9 @@
 package models
 
+import "gorm.io/gorm"
+
 type Hop struct {
+	gorm.Model
 	ID     int    `json:"id" gorm:"primary_key"`
 	Name  string `json:"name" binding:"required"`
 	Iso    string `json:"iso" binding:"required"`
@@ -8,6 +11,7 @@ type Hop struct {
 }
 
 type Malt struct {
+	gorm.Model
 	ID     int    `json:"id" gorm:"primary_key"`
 	Name  string `json:"name"`
 	EBC    string `json:"EBC"`
@@ -15,6 +19,7 @@ type Malt struct {
 }
 
 type Yeast struct {
+	gorm.Model
 	ID     int    `json:"id" gorm:"primary_key"`
 	Name  string `json:"name"`
 	MinTemp float64 `json:"minTemp"`
